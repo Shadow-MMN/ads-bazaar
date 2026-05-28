@@ -3,5 +3,5 @@
   "framework": "nextjs",
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm --filter @ads-bazaar/frontend build",
-  "outputDirectory": "apps/frontend/.next"
+  "outputDirectory": ".next"
 }
