@@ -14,222 +14,282 @@ type OnboardingFlowProps = {
 
 const roleOptions = {
   business: {
+    eyebrow: "For brands",
     title: "Create campaigns as a business",
-    text: "Register your business profile, then launch escrow-funded campaigns for creators.",
+    text: "Register your business, then create campaigns, fund escrow, and approve creator work.",
   },
   creator: {
+    eyebrow: "For creators",
     title: "Earn from campaigns as a creator",
-    text: "Set up your creator profile, then apply to funded campaigns and claim payouts.",
+    text: "Set up your profile, apply to funded campaigns, submit proof, and claim payouts.",
   },
 };
 
-const businessHighlights = [
-  "Verified business identity",
-  "Escrow-backed campaign funding",
-  "Creator applications dashboard",
-  "Proof review and payout approval",
+const businessFields = [
+  { label: "Business name *", type: "text", autoComplete: "organization", required: true },
+  { label: "Industry", type: "text", autoComplete: "off", placeholder: "Fintech, beauty, food..." },
+  { label: "Business email *", type: "email", autoComplete: "email", required: true, wide: true },
+  { label: "Country", type: "text", autoComplete: "country-name" },
+  { label: "Phone number", type: "tel", autoComplete: "tel", placeholder: "+234" },
+  { label: "Website or social page", type: "url", autoComplete: "url", placeholder: "https://", wide: true },
 ];
 
-const creatorHighlights = [
-  "Creator profile and social links",
-  "Campaign discovery by market",
-  "Proof submission tracking",
-  "Wallet-native payout claims",
+const creatorFields = [
+  { label: "Display name *", type: "text", autoComplete: "name", required: true },
+  { label: "Primary category", type: "text", autoComplete: "off", placeholder: "Lifestyle, gaming..." },
+  { label: "Email address *", type: "email", autoComplete: "email", required: true, wide: true },
+  { label: "Country", type: "text", autoComplete: "country-name" },
+  { label: "Audience size", type: "number", autoComplete: "off", placeholder: "10000" },
+  { label: "Primary social link *", type: "url", autoComplete: "url", placeholder: "https://", required: true, wide: true },
 ];
+
+const modalShellClass =
+  "relative max-h-[92vh] w-full overflow-hidden rounded-[28px] border border-white/12 bg-[rgba(20,52,46,0.72)] text-white shadow-[0_34px_120px_rgba(0,0,0,0.45)] backdrop-blur-2xl";
+
+const panelClass =
+  "rounded-2xl border border-white/10 bg-white/[0.055] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]";
 
 const fieldClass =
-  "mt-2 min-h-12 w-full rounded-md border border-[#b9c0bc] bg-transparent px-3.5 text-base text-[#111814] outline-none transition focus:border-[#6da967] focus:ring-2 focus:ring-[#6da967]/25";
+  "mt-2 min-h-12 w-full rounded-xl border border-white/10 bg-[#17352f]/80 px-4 text-sm text-white outline-none transition placeholder:text-white/28 focus:border-[#2dd4bf] focus:ring-2 focus:ring-[#2dd4bf]/20";
 
-const selectClass = `${fieldClass} appearance-none`;
-
-function FormField({
-  children,
-  className = "",
+function Field({
+  autoComplete,
   label,
+  placeholder,
+  required,
+  type,
+  wide,
 }: {
-  children: React.ReactNode;
-  className?: string;
+  autoComplete?: string;
   label: string;
+  placeholder?: string;
+  required?: boolean;
+  type: string;
+  wide?: boolean;
 }) {
   return (
-    <label className={`block text-sm text-[#202722] ${className}`.trim()}>
+    <label className={`block text-sm font-medium text-white/78 ${wide ? "md:col-span-2" : ""}`}>
       {label}
-      {children}
+      <input
+        autoComplete={autoComplete}
+        className={fieldClass}
+        placeholder={placeholder}
+        required={required}
+        type={type}
+      />
     </label>
   );
 }
 
-function RegistrationAside({ role }: { role: Role }) {
-  const isBusiness = role === "business";
-  const highlights = isBusiness ? businessHighlights : creatorHighlights;
-
+function ModalBackdrop({ children }: { children: React.ReactNode }) {
   return (
-    <aside className="hidden min-h-[640px] border-r border-[#b8beb9] px-8 py-8 lg:block">
-      <div className="flex items-center gap-8">
-        <p className="rounded-full bg-[#dfeeea] px-3 py-1 text-[22px] font-black uppercase tracking-[0.28em] text-[#17201b]">
-          Join us today
-        </p>
-        <div className="h-px flex-1 bg-[#b8beb9]" />
-      </div>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[radial-gradient(circle_at_24%_12%,rgba(216,255,40,0.18),transparent_28%),radial-gradient(circle_at_78%_24%,rgba(45,212,191,0.2),transparent_34%),linear-gradient(120deg,rgba(21,23,15,0.92),rgba(7,40,43,0.92))] px-3 py-6 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="onboarding-title"
+    >
+      {children}
+    </div>
+  );
+}
 
-      <div className="relative mx-auto mt-16 h-[280px] max-w-[440px]">
-        <div className="absolute inset-x-0 bottom-3 h-[220px] rounded-[48%] bg-[#edf7cf]" />
-        <div className="absolute bottom-14 left-1/2 h-32 w-64 -translate-x-1/2 rounded-lg border border-[#d79f53] bg-[#f5b65f] shadow-[0_22px_40px_rgba(31,44,37,0.12)]">
-          <div className="absolute -top-10 left-8 h-14 w-10 rounded-t-full bg-[#f05a40]" />
-          <div className="absolute -top-16 left-20 h-20 w-12 rounded-md bg-[#143f47]" />
-          <div className="absolute -top-20 left-36 h-24 w-16 rounded-md bg-[#7fd0e4]" />
-          <div className="absolute -top-12 right-10 size-16 rounded-full bg-[#8fd39d]" />
-          <div className="absolute bottom-7 left-8 text-xs font-black uppercase text-white/80">
-            {isBusiness ? "Campaign" : "Creator"}
+function CloseButton({ onClose }: { onClose: () => void }) {
+  return (
+    <button
+      className="absolute right-5 top-5 z-10 flex size-11 items-center justify-center rounded-xl border border-white/12 bg-white/[0.045] text-3xl leading-none text-white/70 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2dd4bf]"
+      type="button"
+      onClick={onClose}
+      aria-label="Close onboarding"
+    >
+      ×
+    </button>
+  );
+}
+
+function RoleSelection({
+  onClose,
+  onSelect,
+  wallet,
+}: {
+  onClose: () => void;
+  onSelect: (role: Role) => void;
+  wallet: WalletState | null;
+}) {
+  return (
+    <ModalBackdrop>
+      <div className={`${modalShellClass} max-w-[720px]`}>
+        <CloseButton onClose={onClose} />
+        <div className="border-b border-white/8 px-7 py-7 sm:px-10">
+          <p className="text-sm text-white/58">Wallet connected</p>
+          <h2 id="onboarding-title" className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">
+            Welcome to AdsBazaar
+          </h2>
+          {wallet ? (
+            <p className="mt-3 w-fit rounded-lg bg-[#102b28] px-3 py-2 font-mono text-xs text-[#7dded2]">
+              {wallet.network} · {wallet.address.slice(0, 5)}...{wallet.address.slice(-5)}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="px-7 py-8 sm:px-10">
+          <div className="flex items-center justify-between gap-6">
+            <h3 className="text-xl font-semibold text-white/88">What are you here to do?</h3>
+            <span className="hidden text-sm font-semibold text-[#2dd4bf] sm:block">
+              Choose a path
+            </span>
           </div>
-          <div className="absolute bottom-7 right-8 text-xs font-black uppercase text-white/80">
-            Escrow
+
+          <div className="mt-7 grid gap-4">
+            {(["business", "creator"] as Role[]).map((option) => (
+              <button
+                className={`${panelClass} group p-5 text-left transition hover:-translate-y-0.5 hover:border-[#2dd4bf]/55 hover:bg-white/[0.075] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2dd4bf]`}
+                key={option}
+                type="button"
+                onClick={() => onSelect(option)}
+              >
+                <div className="flex items-start gap-4">
+                  <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#102b28] font-mono text-sm font-black text-[#2dd4bf] ring-1 ring-white/10">
+                    {option === "business" ? "BIZ" : "CRE"}
+                  </span>
+                  <span>
+                    <span className="block text-xs font-black uppercase tracking-[0.22em] text-[#2dd4bf]">
+                      {roleOptions[option].eyebrow}
+                    </span>
+                    <strong className="mt-1 block text-xl font-black text-white">
+                      {roleOptions[option].title}
+                    </strong>
+                    <span className="mt-2 block text-sm leading-relaxed text-white/58">
+                      {roleOptions[option].text}
+                    </span>
+                  </span>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
-        <div className="absolute bottom-10 left-2 h-28 w-8 rounded-full bg-[#dd6b68]" />
-        <div className="absolute bottom-9 right-8 h-32 w-10 rounded-full bg-[#6aac60]" />
-        <div className="absolute right-24 top-8 size-7 rounded-full bg-[#f84c68]" />
-        <div className="absolute right-16 top-20 size-4 rounded-full bg-[#f84c68]" />
       </div>
+    </ModalBackdrop>
+  );
+}
 
-      <p className="mt-12 max-w-[560px] text-lg leading-loose text-[#68706b]">
-        {isBusiness
-          ? "Create a trusted AdsBazaar business profile before launching campaigns, funding escrow, and reviewing creator submissions."
-          : "Build a creator profile that helps businesses understand your audience, content style, and preferred payout setup."}
-      </p>
+function RegistrationForm({
+  onBack,
+  onClose,
+  onSubmit,
+  role,
+}: {
+  onBack: () => void;
+  onClose: () => void;
+  onSubmit: () => void;
+  role: Role;
+}) {
+  const fields = role === "business" ? businessFields : creatorFields;
+  const isBusiness = role === "business";
 
-      <div className="mt-16 grid grid-cols-2 gap-x-10 gap-y-6">
-        {highlights.map((item) => (
-          <div className="flex items-center gap-3 text-lg font-black text-[#151b17]" key={item}>
-            <span
-              className="flex size-6 items-center justify-center rounded-full bg-[#6dad66] text-sm text-white shadow-[0_10px_20px_rgba(64,111,59,0.2)]"
-              aria-hidden="true"
-            >
-              ✓
-            </span>
-            {item}
+  return (
+    <ModalBackdrop>
+      <div className={`${modalShellClass} max-w-[780px]`}>
+        <CloseButton onClose={onClose} />
+        <div className="border-b border-white/8 px-7 py-7 sm:px-10">
+          <button
+            className="mb-5 text-sm font-semibold text-[#2dd4bf] transition hover:text-[#75fff1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2dd4bf]"
+            type="button"
+            onClick={onBack}
+          >
+            Back to role selection
+          </button>
+          <h2 id="onboarding-title" className="text-3xl font-black tracking-tight sm:text-4xl">
+            {isBusiness ? "Register your business" : "Set up your creator profile"}
+          </h2>
+          <p className="mt-2 text-base text-white/58">
+            {isBusiness
+              ? "Create your AdsBazaar business identity before launching campaigns."
+              : "Create a creator profile before applying to paid campaigns."}
+          </p>
+        </div>
+
+        <form
+          className="px-7 py-7 sm:px-10"
+          onSubmit={(event) => {
+            event.preventDefault();
+            onSubmit();
+          }}
+        >
+          <div className={`${panelClass} p-5`}>
+            <div className="grid gap-5 md:grid-cols-2">
+              {fields.map((field) => (
+                <Field {...field} key={field.label} />
+              ))}
+              <label className="block text-sm font-medium text-white/78 md:col-span-2">
+                {isBusiness ? "Business description *" : "Creator bio *"}
+                <textarea
+                  className={`${fieldClass} min-h-28 resize-none py-3`}
+                  placeholder={
+                    isBusiness
+                      ? "Tell creators what your business does."
+                      : "Share your niche, audience, and campaign style."
+                  }
+                  required
+                />
+              </label>
+            </div>
           </div>
-        ))}
+
+          <div className="mt-7 flex flex-col-reverse gap-3 border-t border-white/8 pt-6 sm:flex-row sm:justify-end">
+            <button
+              className="min-h-12 rounded-xl border border-white/16 px-7 text-sm font-black text-white/86 transition hover:bg-white/8 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2dd4bf]"
+              type="button"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
+            <button
+              className="min-h-12 rounded-xl bg-[#2dd4bf] px-7 text-sm font-black text-[#08201d] shadow-[0_14px_40px_rgba(45,212,191,0.24)] transition hover:bg-[#75fff1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2dd4bf]"
+              type="submit"
+            >
+              {isBusiness ? "Register business" : "Register creator"}
+            </button>
+          </div>
+        </form>
       </div>
-    </aside>
+    </ModalBackdrop>
   );
 }
 
-function BusinessRegistrationForm({ onSubmit }: { onSubmit: () => void }) {
+function CompleteState({
+  onClose,
+  role,
+}: {
+  onClose: () => void;
+  role: Role | null;
+}) {
   return (
-    <form className="grid gap-5" onSubmit={(event) => {
-      event.preventDefault();
-      onSubmit();
-    }}>
-      <div className="grid gap-5 sm:grid-cols-2">
-        <FormField label="Business name *">
-          <input className={fieldClass} required type="text" autoComplete="organization" />
-        </FormField>
-        <FormField label="Industry">
-          <select className={selectClass} defaultValue="">
-            <option value="" disabled>
-              Select industry
-            </option>
-            <option>Fashion and beauty</option>
-            <option>Food and hospitality</option>
-            <option>Fintech</option>
-            <option>Education</option>
-            <option>Consumer products</option>
-          </select>
-        </FormField>
+    <ModalBackdrop>
+      <div className={`${modalShellClass} max-w-[560px]`}>
+        <CloseButton onClose={onClose} />
+        <div className="px-7 py-12 sm:px-10">
+          <p className="text-sm font-black uppercase tracking-[0.22em] text-[#2dd4bf]">
+            Saved locally
+          </p>
+          <h2 id="onboarding-title" className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
+            {role === "business" ? "Business registered" : "Creator profile ready"}
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-white/62">
+            {role === "business"
+              ? "Next, we will connect this profile to campaign creation and escrow funding when the contract flow is ready."
+              : "Next, we will connect this profile to campaign discovery, applications, and payout claims."}
+          </p>
+          <button
+            className="mt-8 min-h-12 rounded-xl bg-[#2dd4bf] px-7 text-sm font-black text-[#08201d] shadow-[0_14px_40px_rgba(45,212,191,0.24)] transition hover:bg-[#75fff1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2dd4bf]"
+            type="button"
+            onClick={onClose}
+          >
+            Finish
+          </button>
+        </div>
       </div>
-
-      <FormField label="Business email *">
-        <input className={fieldClass} required type="email" autoComplete="email" />
-      </FormField>
-
-      <div className="grid gap-5 sm:grid-cols-2">
-        <FormField label="Country">
-          <input className={fieldClass} type="text" autoComplete="country-name" />
-        </FormField>
-        <FormField label="Phone number">
-          <input className={fieldClass} type="tel" autoComplete="tel" placeholder="+234" />
-        </FormField>
-      </div>
-
-      <FormField label="Website or social page">
-        <input className={fieldClass} type="url" autoComplete="url" placeholder="https://" />
-      </FormField>
-
-      <FormField label="Business description *">
-        <textarea
-          className={`${fieldClass} min-h-28 resize-none py-3`}
-          required
-          placeholder="Tell creators what your business does."
-        />
-      </FormField>
-
-      <button
-        className="mt-3 min-h-14 rounded-xl bg-[#6daa64] px-6 text-base font-black text-white transition hover:bg-[#5c9a55] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#6daa64]"
-        type="submit"
-      >
-        Register business
-      </button>
-    </form>
-  );
-}
-
-function CreatorRegistrationForm({ onSubmit }: { onSubmit: () => void }) {
-  return (
-    <form className="grid gap-5" onSubmit={(event) => {
-      event.preventDefault();
-      onSubmit();
-    }}>
-      <div className="grid gap-5 sm:grid-cols-2">
-        <FormField label="Display name *">
-          <input className={fieldClass} required type="text" autoComplete="name" />
-        </FormField>
-        <FormField label="Primary category">
-          <select className={selectClass} defaultValue="">
-            <option value="" disabled>
-              Select category
-            </option>
-            <option>Lifestyle</option>
-            <option>Beauty</option>
-            <option>Gaming</option>
-            <option>Finance</option>
-            <option>Food</option>
-          </select>
-        </FormField>
-      </div>
-
-      <FormField label="Email Address *">
-        <input className={fieldClass} required type="email" autoComplete="email" />
-      </FormField>
-
-      <div className="grid gap-5 sm:grid-cols-2">
-        <FormField label="Country">
-          <input className={fieldClass} type="text" autoComplete="country-name" />
-        </FormField>
-        <FormField label="Audience size">
-          <input className={fieldClass} type="number" min="0" placeholder="10000" />
-        </FormField>
-      </div>
-
-      <FormField label="Primary social link *">
-        <input className={fieldClass} required type="url" autoComplete="url" placeholder="https://" />
-      </FormField>
-
-      <FormField label="Creator bio *">
-        <textarea
-          className={`${fieldClass} min-h-28 resize-none py-3`}
-          required
-          placeholder="Share your niche, audience, and campaign style."
-        />
-      </FormField>
-
-      <button
-        className="mt-3 min-h-14 rounded-xl bg-[#6daa64] px-6 text-base font-black text-white transition hover:bg-[#5c9a55] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#6daa64]"
-        type="submit"
-      >
-        Register creator profile
-      </button>
-    </form>
+    </ModalBackdrop>
   );
 }
 
@@ -242,17 +302,37 @@ export function OnboardingFlow({
   const [role, setRole] = useState<Role | null>(null);
   const [wallet, setWallet] = useState<WalletState | null>(null);
 
-  const title = useMemo(() => {
+  const modal = useMemo(() => {
     if (step === "role") {
-      return "Welcome to AdsBazaar";
+      return (
+        <RoleSelection
+          onClose={() => setStep("closed")}
+          onSelect={(selectedRole) => {
+            setRole(selectedRole);
+            setStep("registration");
+          }}
+          wallet={wallet}
+        />
+      );
+    }
+
+    if (step === "registration" && role) {
+      return (
+        <RegistrationForm
+          onBack={() => setStep("role")}
+          onClose={() => setStep("closed")}
+          onSubmit={() => setStep("complete")}
+          role={role}
+        />
+      );
     }
 
     if (step === "complete") {
-      return role === "business" ? "Business registered" : "Creator profile ready";
+      return <CompleteState onClose={() => setStep("closed")} role={role} />;
     }
 
-    return role === "business" ? "Register your business" : "Set up your creator profile";
-  }, [role, step]);
+    return null;
+  }, [role, step, wallet]);
 
   useEffect(() => {
     if (step === "closed") {
@@ -269,121 +349,20 @@ export function OnboardingFlow({
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [step]);
 
-  const openRoleSelection = (connectedWallet: WalletState) => {
-    setWallet(connectedWallet);
-    setRole(null);
-    setStep("role");
-  };
-
-  const chooseRole = (selectedRole: Role) => {
-    setRole(selectedRole);
-    setStep("registration");
-  };
-
   return (
     <>
       <StellarWalletButton
         className={buttonClassName}
         label={buttonLabel}
-        onConnected={openRoleSelection}
+        onConnected={(connectedWallet) => {
+          setWallet(connectedWallet);
+          setRole(null);
+          setStep("role");
+        }}
+        showConnectedWallet={false}
         size={buttonSize}
       />
-
-      {step !== "closed" ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#06171d]/80 px-3 py-6 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="onboarding-title"
-        >
-          <div className="relative max-h-[92vh] w-full max-w-6xl overflow-y-auto rounded-[28px] bg-[#fbfdf9] text-[#151b17] shadow-[0_34px_120px_rgba(0,0,0,0.36)]">
-            <button
-              className="absolute right-5 top-5 z-10 flex size-10 items-center justify-center rounded-full border border-[#d4dad5] text-xl text-[#465048] transition hover:bg-[#eef4ef] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#6daa64]"
-              type="button"
-              onClick={() => setStep("closed")}
-              aria-label="Close onboarding"
-            >
-              ×
-            </button>
-
-            {step === "role" ? (
-              <div className="mx-auto max-w-3xl px-6 py-16 text-center sm:px-10">
-                <p className="mb-4 text-xs font-black uppercase tracking-[0.28em] text-[#6daa64]">
-                  Wallet connected
-                </p>
-                <h2 id="onboarding-title" className="text-4xl font-black tracking-tight sm:text-5xl">
-                  {title}
-                </h2>
-                <p className="mx-auto mt-4 max-w-xl text-lg text-[#68706b]">
-                  What are you here to do?
-                </p>
-                {wallet ? (
-                  <p className="mx-auto mt-3 w-fit rounded-full bg-[#eef4ef] px-4 py-2 font-mono text-xs text-[#59635d]">
-                    {wallet.network} · {wallet.address.slice(0, 5)}...{wallet.address.slice(-5)}
-                  </p>
-                ) : null}
-
-                <div className="mt-10 grid gap-4 text-left md:grid-cols-2">
-                  {(["business", "creator"] as Role[]).map((option) => (
-                    <button
-                      className="rounded-2xl border border-[#d4dad5] bg-white p-6 text-left shadow-[0_18px_44px_rgba(21,27,23,0.08)] transition hover:-translate-y-1 hover:border-[#6daa64] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#6daa64]"
-                      key={option}
-                      type="button"
-                      onClick={() => chooseRole(option)}
-                    >
-                      <span className="mb-8 flex size-11 items-center justify-center rounded-full bg-[#e7f3df] text-lg font-black text-[#4d8847]">
-                        {option === "business" ? "B" : "C"}
-                      </span>
-                      <strong className="block text-2xl font-black">
-                        {roleOptions[option].title}
-                      </strong>
-                      <span className="mt-3 block text-base leading-relaxed text-[#68706b]">
-                        {roleOptions[option].text}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="grid lg:grid-cols-[1.08fr_0.92fr]">
-                {role ? <RegistrationAside role={role} /> : null}
-
-                <section className="px-6 py-12 sm:px-10 lg:px-14" aria-labelledby="onboarding-title">
-                  <h2 id="onboarding-title" className="text-4xl font-black tracking-tight sm:text-5xl">
-                    {title}
-                  </h2>
-                  <div className="mt-3 h-1 w-18 bg-[#6daa64]" />
-
-                  {step === "complete" ? (
-                    <div className="mt-10 rounded-2xl border border-[#d4dad5] bg-white p-6">
-                      <p className="text-lg leading-relaxed text-[#68706b]">
-                        {role === "business"
-                          ? "Your business profile is ready. The next production step will be creating campaigns and funding escrow."
-                          : "Your creator profile is ready. The next production step will be browsing campaigns and applying with your profile."}
-                      </p>
-                      <button
-                        className="mt-8 min-h-14 w-full rounded-xl bg-[#6daa64] px-6 text-base font-black text-white transition hover:bg-[#5c9a55] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#6daa64]"
-                        type="button"
-                        onClick={() => setStep("closed")}
-                      >
-                        Continue
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="mt-10">
-                      {role === "business" ? (
-                        <BusinessRegistrationForm onSubmit={() => setStep("complete")} />
-                      ) : (
-                        <CreatorRegistrationForm onSubmit={() => setStep("complete")} />
-                      )}
-                    </div>
-                  )}
-                </section>
-              </div>
-            )}
-          </div>
-        </div>
-      ) : null}
+      {modal}
     </>
   );
 }

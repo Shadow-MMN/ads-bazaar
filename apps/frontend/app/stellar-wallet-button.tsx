@@ -18,6 +18,7 @@ type StellarWalletButtonProps = {
   className?: string;
   label?: string;
   onConnected?: (wallet: WalletState) => void;
+  showConnectedWallet?: boolean;
   size?: "default" | "large";
 };
 
@@ -44,6 +45,7 @@ export function StellarWalletButton({
   className = "",
   label = "Connect wallet",
   onConnected,
+  showConnectedWallet = true,
   size = "default",
 }: StellarWalletButtonProps) {
   const [wallet, setWallet] = useState<WalletState | null>(null);
@@ -133,6 +135,20 @@ export function StellarWalletButton({
     setStatus(label);
     setErrorMessage("");
   };
+
+  if (wallet && !showConnectedWallet) {
+    return (
+      <div className={`relative inline-flex flex-col items-center gap-2 ${className}`.trim()}>
+        <button
+          type="button"
+          className={`${connectButtonClass} ${sizeClass}`.trim()}
+          onClick={() => onConnected?.(wallet)}
+        >
+          {label}
+        </button>
+      </div>
+    );
+  }
 
   if (wallet) {
     return (
