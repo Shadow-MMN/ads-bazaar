@@ -34,7 +34,7 @@ export function DashboardChrome({ children }: { children: ReactNode }) {
   }, [mobileNavOpen]);
 
   return (
-    <div className="creator-dashboard-theme min-h-screen bg-[var(--dash-bg)] text-[var(--dash-body)]">
+    <div className="creator-dashboard-theme min-h-screen overflow-x-hidden bg-[var(--dash-bg)] text-[var(--dash-body)]">
       <aside className="fixed top-0 left-0 hidden h-screen w-64 border-r border-[var(--dash-border)] bg-[var(--dash-surface)] lg:flex">
         <SidebarNav />
       </aside>
