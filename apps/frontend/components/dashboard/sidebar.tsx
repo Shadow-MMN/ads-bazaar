@@ -21,7 +21,7 @@ interface NavItem {
 }
 
 const mainNavItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Dashboard", href: "/dashboard/business", icon: LayoutDashboard },
   { label: "Campaigns", href: "/dashboard/campaigns", icon: Megaphone },
   { label: "Inventory", href: "/dashboard/inventory", icon: Package },
   { label: "Analytics", href: "/dashboard/analytics", icon: BarChart2 },
@@ -59,8 +59,8 @@ export default function Sidebar() {
   const renderNavLinks = (items: NavItem[]) => {
     return items.map((item) => {
       const isActive =
-        item.href === "/dashboard"
-          ? pathname === "/dashboard"
+        item.href === "/dashboard/business"
+          ? pathname === "/dashboard/business"
           : pathname.startsWith(item.href);
 
       const Icon = item.icon;
