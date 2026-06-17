@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  /* Legacy tokens, keep for dashboard */
   --bg: #071b20;
   --bg-2: #102f32;
   --ink: #071116;
@@ -15,11 +16,12 @@
   --dark-line: rgba(7, 17, 22, 0.1);
   --shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
 
-  /* Dashboard Design Tokens */
+  /* Landing Page & Dashboard Design Tokens */
   --db-bg: #131313;
   --db-surface-low: #1c1b1b;
   --db-surface: #201f1f;
   --db-surface-high: #2a2a2a;
+  --db-surface-highest: #353534;
   --db-on-surface: #e5e2e1;
   --db-on-surface-variant: #c5c9ae;
   --db-primary-container: #c8f232;
@@ -43,10 +45,21 @@
 }
 
 @theme inline {
-  --color-background: var(--bg);
-  --color-foreground: var(--paper);
+  --color-background: var(--db-bg);
+  --color-surface-container: var(--db-surface);
+  --color-surface-container-high: var(--db-surface-high);
+  --color-surface-container-highest: var(--db-surface-highest);
+  --color-on-surface: var(--db-on-surface);
+  --color-on-surface-variant: var(--db-on-surface-variant);
+  --color-primary-container: var(--db-primary-container);
+  --color-on-primary: var(--db-on-primary);
+  --color-outline-variant: var(--db-outline-variant);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-sora: var(--font-sora);
+  --font-geist: var(--font-geist-sans);
+
   --animate-enter-down: enterDown 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-enter-left: enterLeft 850ms 120ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-enter-right: enterRight 900ms 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -64,21 +77,14 @@
 
   body {
     margin: 0;
-    background: var(--bg);
-    color: var(--paper);
+    background: var(--db-bg);
+    color: var(--db-on-surface);
     font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   }
 
   button {
     font: inherit;
-  }
-
-  .font-sora {
-    font-family: var(--font-sora), sans-serif;
-  }
-
-  .font-geist {
-    font-family: var(--font-geist), sans-serif;
+    cursor: pointer;
   }
 }
 
