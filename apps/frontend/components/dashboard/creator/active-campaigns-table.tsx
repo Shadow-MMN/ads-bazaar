@@ -79,7 +79,7 @@ export function ActiveCampaignsTable({
                   <tr key={campaign.id}>
                     <td className="py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded border border-[var(--dash-border)] bg-[#262626]">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded border border-[var(--dash-border)] bg-[var(--dash-bg)]">
                           <Icon className="size-[18px] text-[var(--dash-body)]" aria-hidden="true" />
                         </div>
                         <div>

@@ -250,15 +250,15 @@ export function CampaignWizardModal() {
       />
 
       {/* Modal panel — slides up from bottom */}
-      <div className="absolute inset-x-0 bottom-0 top-0 flex flex-col overflow-hidden bg-[#131313] sm:inset-x-4 sm:top-4 sm:rounded-t-2xl lg:inset-x-auto lg:left-1/2 lg:top-8 lg:w-full lg:max-w-[720px] lg:-translate-x-1/2 lg:rounded-2xl">
+      <div className="absolute inset-x-0 bottom-0 top-0 flex flex-col overflow-hidden bg-[var(--dash-bg)] sm:inset-x-4 sm:top-4 sm:rounded-t-2xl lg:inset-x-auto lg:left-1/2 lg:top-8 lg:w-full lg:max-w-[720px] lg:-translate-x-1/2 lg:rounded-2xl">
         {/* Header */}
-        <header className="flex h-14 shrink-0 items-center justify-between border-b border-[rgba(255,255,255,0.1)] px-5">
+        <header className="flex h-14 shrink-0 items-center justify-between border-b border-[var(--dash-border)] px-5">
           <div className="flex items-center gap-3">
-            <span className="text-[17px] font-bold text-[#f7f8f2]">
+            <span className="text-[17px] font-bold text-[var(--dash-heading)]">
               AdsBazaar
             </span>
-            <span className="text-[rgba(255,255,255,0.25)]">|</span>
-            <span className="text-[13px] text-[rgba(255,255,255,0.5)]">
+            <span className="text-[var(--dash-muted)] opacity-50">|</span>
+            <span className="text-[13px] text-[var(--dash-muted)]">
               Campaign Creator
             </span>
           </div>
@@ -266,7 +266,7 @@ export function CampaignWizardModal() {
             type="button"
             onClick={handleCancelClick}
             aria-label="Close wizard"
-            className="flex items-center gap-1.5 text-[13px] text-[rgba(255,255,255,0.5)] transition hover:text-[rgba(255,255,255,0.85)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c8f232]"
+            className="flex items-center gap-1.5 text-[13px] text-[var(--dash-muted)] transition hover:text-[var(--dash-body)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--dash-accent)]"
           >
             <X size={14} aria-hidden="true" />
             Cancel Setup
@@ -317,24 +317,24 @@ export function CampaignWizardModal() {
         </main>
 
         {/* Fixed bottom nav */}
-        <nav className="flex h-16 shrink-0 items-center justify-between border-t border-[rgba(255,255,255,0.1)] bg-[#1a1a1a] px-5">
+        <nav className="flex h-16 shrink-0 items-center justify-between border-t border-[var(--dash-border)] bg-[var(--dash-surface)] px-5">
           <button
             type="button"
             onClick={prevStep}
             disabled={state.currentStep === 1}
-            className="flex min-h-10 items-center rounded-full border border-[rgba(255,255,255,0.2)] px-5 text-sm font-medium text-[#f7f8f2] transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c8f232]"
+            className="flex min-h-10 items-center rounded-full border border-[var(--dash-border)] px-5 text-sm font-medium text-[var(--dash-heading)] transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--dash-accent)]"
           >
             ← Back
           </button>
 
-          <span className="hidden text-[11px] text-[rgba(255,255,255,0.35)] sm:block">
+          <span className="hidden text-[11px] text-[var(--dash-muted)] opacity-60 sm:block">
             Saved as draft automatically
           </span>
 
           <button
             type="button"
             onClick={nextStep}
-            className="flex min-h-10 items-center gap-2 rounded-full bg-[#c8f232] px-5 text-sm font-bold text-[#293500] transition hover:bg-[#d4f54a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c8f232]"
+            className="flex min-h-10 items-center gap-2 rounded-full bg-[var(--dash-accent-strong)] px-5 text-sm font-bold text-[var(--dash-on-accent-strong)] transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--dash-accent)]"
           >
             {state.currentStep === 5 ? (
               <>
@@ -351,18 +351,18 @@ export function CampaignWizardModal() {
       {/* Discard confirmation */}
       {showDiscardDialog && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60 px-4">
-          <div className="w-full max-w-sm rounded-2xl border border-[rgba(255,255,255,0.12)] bg-[#1e1e1e] p-6">
-            <h2 className="text-lg font-bold text-[#f7f8f2]">
+          <div className="w-full max-w-sm rounded-2xl border border-[var(--dash-border)] bg-[var(--dash-surface)] p-6">
+            <h2 className="text-lg font-bold text-[var(--dash-heading)]">
               Discard this campaign?
             </h2>
-            <p className="mt-2 text-sm text-[rgba(255,255,255,0.6)]">
+            <p className="mt-2 text-sm text-[var(--dash-muted)]">
               Your draft will be cleared and cannot be recovered.
             </p>
             <div className="mt-6 flex gap-3">
               <button
                 type="button"
                 onClick={() => setShowDiscardDialog(false)}
-                className="flex-1 rounded-full border border-[rgba(255,255,255,0.2)] py-2.5 text-sm font-medium text-[#f7f8f2] transition hover:bg-white/10"
+                className="flex-1 rounded-full border border-[var(--dash-border)] py-2.5 text-sm font-medium text-[var(--dash-heading)] transition hover:bg-white/10"
               >
                 Keep editing
               </button>

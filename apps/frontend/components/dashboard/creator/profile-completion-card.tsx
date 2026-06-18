@@ -7,7 +7,7 @@ export function ProfileCompletionCard({
   steps: ProfileCompletionStep[];
 }) {
   return (
-    <article className="col-span-12 border border-[var(--dash-border)] bg-[#262626] p-6 lg:col-span-4">
+    <article className="col-span-12 border border-[var(--dash-border)] bg-[var(--dash-bg)] p-6 lg:col-span-4">
       <h2 className="mb-6 text-xs font-semibold uppercase tracking-[0.05em] text-[var(--dash-heading)]">
         Profile Completion
       </h2>
