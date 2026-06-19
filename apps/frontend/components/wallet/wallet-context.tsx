@@ -11,7 +11,7 @@ export type WalletContextValue = {
   wallet: WalletState | null;
   isConnecting: boolean;
   error: string | null;
-  connect: () => Promise<void>;
+  connect: () => Promise<WalletState | null>;
   disconnect: () => void;
 };
 

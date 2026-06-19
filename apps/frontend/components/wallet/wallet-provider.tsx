@@ -44,7 +44,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const connect = async () => {
+  const connect = async (): Promise<WalletState | null> => {
     setIsConnecting(true);
     setError(null);
 
@@ -66,12 +66,15 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       }
 
       const network = await getNetworkDetails();
-      setWallet({
+      const newWallet: WalletState = {
         address: access.address,
         network: network.error ? "Stellar" : network.network,
-      });
+      };
+      setWallet(newWallet);
+      return newWallet;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to connect wallet.");
+      return null;
     } finally {
       setIsConnecting(false);
     }
