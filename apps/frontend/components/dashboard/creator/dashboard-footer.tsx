@@ -1,16 +1,70 @@
 import Link from "next/link";
 
-const resourceLinks = [
-  { href: "/docs", label: "Documentation" },
-  { href: "/brand", label: "Brand Kit" },
-  { href: "/docs/stellar-guide", label: "Stellar Guide" },
+type FooterLink =
+  | {
+      kind: "internal";
+      href: string;
+      label: string;
+    }
+  | {
+      kind: "external";
+      href: string;
+      label: string;
+    }
+  | {
+      kind: "disabled";
+      label: string;
+      title: string;
+    };
+
+const resourceLinks: FooterLink[] = [
+  { kind: "disabled", label: "Documentation", title: "Coming soon" },
+  { kind: "disabled", label: "Brand Kit", title: "Coming soon" },
+  { kind: "disabled", label: "Stellar Guide", title: "Coming soon" },
 ];
 
-const communityLinks = [
-  { href: "https://discord.com", label: "Discord" },
-  { href: "https://x.com", label: "Twitter/X" },
-  { href: "/forum", label: "Forum" },
+const communityLinks: FooterLink[] = [
+  { kind: "external", href: "https://discord.com", label: "Discord" },
+  { kind: "external", href: "https://x.com", label: "Twitter/X" },
+  { kind: "disabled", label: "Forum", title: "Coming soon" },
 ];
+
+function FooterLinkItem({ link }: { link: FooterLink }) {
+  const baseClassName =
+    "rounded text-[var(--dash-muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--dash-accent)]";
+
+  if (link.kind === "internal") {
+    return (
+      <Link href={link.href} className={`${baseClassName} hover:text-[var(--dash-accent)]`}>
+        {link.label}
+      </Link>
+    );
+  }
+
+  if (link.kind === "external") {
+    return (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${baseClassName} hover:text-[var(--dash-accent)]`}
+      >
+        {link.label}
+      </a>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      title={link.title}
+      disabled
+      className={`${baseClassName} cursor-default text-left opacity-50`}
+    >
+      {link.label}
+    </button>
+  );
+}
 
 export function DashboardFooter() {
   return (
@@ -32,13 +86,8 @@ export function DashboardFooter() {
           </h2>
           <ul className="space-y-2 text-sm text-[var(--dash-muted)]">
             {resourceLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--dash-accent)] hover:text-[var(--dash-accent)]"
-                >
-                  {link.label}
-                </Link>
+              <li key={link.label}>
+                <FooterLinkItem link={link} />
               </li>
             ))}
           </ul>
@@ -50,13 +99,8 @@ export function DashboardFooter() {
           </h2>
           <ul className="space-y-2 text-sm text-[var(--dash-muted)]">
             {communityLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--dash-accent)] hover:text-[var(--dash-accent)]"
-                >
-                  {link.label}
-                </Link>
+              <li key={link.label}>
+                <FooterLinkItem link={link} />
               </li>
             ))}
           </ul>
