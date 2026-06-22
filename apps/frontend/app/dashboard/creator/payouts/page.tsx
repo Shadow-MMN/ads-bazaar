@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { Timer, TrendingUp } from "lucide-react";
 import { ClaimableCard } from "@/components/dashboard/creator/claimable-card";
+
+export const metadata: Metadata = {
+  title: "Payouts",
+};
 import {
   connectedWallet,
   currentCycle,

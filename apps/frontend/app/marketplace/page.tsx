@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
+
+export const metadata: Metadata = {
+  title: "Marketplace — AdsBazaar",
+};
 import { MarketplaceHero } from "@/components/marketplace/marketplace-hero";
 import { MarketplaceFilters } from "@/components/marketplace/marketplace-filters";
 import { MarketplaceGridHeader } from "@/components/marketplace/marketplace-grid-header";

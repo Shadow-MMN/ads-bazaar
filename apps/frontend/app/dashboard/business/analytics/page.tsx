@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   analyticsStats,
   spendEngagementSeries,
@@ -5,6 +6,10 @@ import {
   topCampaigns,
   regionRows,
 } from "@/components/dashboard/business/analytics-data";
+
+export const metadata: Metadata = {
+  title: "Analytics",
+};
 import { AnalyticsHeader } from "@/components/dashboard/business/analytics-header";
 import { DashboardHeader } from "@/components/dashboard/business/dashboard-header";
 import { AnalyticsStatCard } from "@/components/dashboard/business/analytics-stat-card";

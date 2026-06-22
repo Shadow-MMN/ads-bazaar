@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import { DashboardChrome } from "@/components/dashboard/creator/dashboard-chrome";
+
+export const metadata: Metadata = {
+  title: {
+    template: "%s — AdsBazaar Creator",
+    default: "Dashboard — AdsBazaar Creator",
+  },
+};
 
 const sora = Sora({
   subsets: ["latin"],

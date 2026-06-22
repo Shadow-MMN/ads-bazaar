@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { DashboardHeader } from "@/components/dashboard/creator/dashboard-header";
 import { ConnectedChannels } from "@/components/dashboard/creator/connected-channels";
+
+export const metadata: Metadata = {
+  title: "Inventory",
+};
 import { DigitalMediaKit } from "@/components/dashboard/creator/digital-media-kit";
 import { AudienceInsights } from "@/components/dashboard/creator/audience-insights";
 import { SyncSchedule } from "@/components/dashboard/creator/sync-schedule";

@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
+
+export const metadata: Metadata = {
+  title: "Campaign Details — AdsBazaar",
+};
 import { campaignDetailMock } from "@/components/marketplace/campaign-detail-data";
 import { CampaignDetailHeader } from "@/components/marketplace/campaign-detail-header";
 import { CampaignHeroImage } from "@/components/marketplace/campaign-hero-image";

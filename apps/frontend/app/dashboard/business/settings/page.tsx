@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { DashboardHeader } from "@/components/dashboard/business/dashboard-header";
 import { ProfileSection } from "@/components/dashboard/shared/profile-section";
+
+export const metadata: Metadata = {
+  title: "Settings",
+};
 import { WalletSettingsSection } from "@/components/dashboard/shared/wallet-settings-section";
 import { NotificationPreferences } from "@/components/dashboard/shared/notification-preferences";
 import { DangerZoneSection } from "@/components/dashboard/shared/danger-zone-section";

@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { DashboardHeader } from '@/components/dashboard/business/dashboard-header';
 import { PayoutsHeader } from '@/components/dashboard/business/payouts-header';
+
+export const metadata: Metadata = {
+  title: "Payouts",
+};
 import { EscrowStatCard } from '@/components/dashboard/business/escrow-stat-card';
 import { WalletAssetsPanel } from '@/components/dashboard/business/wallet-assets-panel';
 import { SorobanContractsSection } from '@/components/dashboard/business/soroban-contracts-section';
