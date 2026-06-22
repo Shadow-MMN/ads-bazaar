@@ -1,11 +1,19 @@
 export type TrendingCampaignTag = "hot" | "featured";
 
+export type CampaignCategory =
+  | "stellar"
+  | "gaming"
+  | "fintech"
+  | "creator"
+  | "defi";
+
 export type TrendingCampaignItem = {
   id: string;
   title: string;
   description: string;
   budget: string;
   tag: TrendingCampaignTag | null;
+  category: CampaignCategory;
   iconBg: string; // Tailwind bg class for the icon box
 };
 
@@ -34,6 +42,14 @@ export const hashtagPills = [
   "#DeFiSocial",
 ];
 
+export const hashtagCategoryMap: Record<string, CampaignCategory> = {
+  "#StellarSummer": "stellar",
+  "#Web3Gaming": "gaming",
+  "#FintechReach": "fintech",
+  "#CreatorEconomy": "creator",
+  "#DeFiSocial": "defi",
+};
+
 export const trendingCampaigns: TrendingCampaignItem[] = [
   {
     id: "nebula-wallet",
@@ -42,6 +58,7 @@ export const trendingCampaigns: TrendingCampaignItem[] = [
       "Promote the first decentralized yield aggregator on Stellar with native Soroban integration.",
     budget: "12.5k XLM",
     tag: "hot",
+    category: "fintech",
     iconBg: "bg-blue-900/40",
   },
   {
@@ -51,6 +68,7 @@ export const trendingCampaigns: TrendingCampaignItem[] = [
       "Top-tier gaming creators needed for the largest RPG tournament on the Stellar network.",
     budget: "50.0k XLM",
     tag: "featured",
+    category: "gaming",
     iconBg: "bg-red-900/40",
   },
   {
@@ -60,6 +78,7 @@ export const trendingCampaigns: TrendingCampaignItem[] = [
       "Educational series about Stellar energy consumption and sustainable validation.",
     budget: "8.2k XLM",
     tag: null,
+    category: "creator",
     iconBg: "bg-green-900/40",
   },
 ];
