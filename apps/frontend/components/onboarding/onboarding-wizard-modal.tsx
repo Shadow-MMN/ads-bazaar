@@ -7,6 +7,7 @@ import { useOnboardingModal } from "./onboarding-modal-context";
 import { StepIndicator } from "./step-indicator";
 import { BusinessForm } from "./business-form";
 import { CreatorForm } from "./creator-form";
+import { useRole } from "@/components/role/role-context";
 
 type Role = "business" | "creator" | null;
 
@@ -34,6 +35,7 @@ const emptyCreatorForm = {
 
 export function OnboardingWizardModal() {
   const { isOpen, intent, closeOnboarding } = useOnboardingModal();
+  const { setRole: persistRole } = useRole();
   const router = useRouter();
   const mainRef = useRef<HTMLElement>(null);
 
@@ -84,6 +86,8 @@ export function OnboardingWizardModal() {
   }
 
   function handleFormSubmit() {
+    // Persist the chosen role to context + localStorage so /dashboard can redirect correctly
+    if (role) persistRole(role);
     setStep("complete");
     try {
       sessionStorage.removeItem(STORAGE_KEY);
